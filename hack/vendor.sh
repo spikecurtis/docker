@@ -17,9 +17,16 @@ clone hg code.google.com/p/go.net 84a4013f96e0
 clone hg code.google.com/p/gosqlite 74691fb6f837
 
 #get libnetwork packages
-clone git github.com/docker/libnetwork e578e95aa101441481411ff1d620f343895f24fe
+clone git github.com/docker/libnetwork 3be488927db8d719568917203deddd630a194564
+clone git github.com/docker/libkv ab16c3d4a8785a9877c62d0b11ea4441cf09120c
+clone git github.com/stretchr/testify dab07ac62d4905d3e48d17dc549c684ac3b7c15a
+clone git github.com/stretchr/objx cbeaeb16a013161a98496fad62933b1d21786672
 clone git github.com/vishvananda/netns 5478c060110032f972e86a1f844fdb9a2f008f2c
 clone git github.com/vishvananda/netlink 8eb64238879fed52fd51c5b30ad20b928fb4c36c
+clone git github.com/BurntSushi/toml f706d00e3de6abe700c994cdd545a1a4915af060
+clone git github.com/samuel/go-zookeeper d0e0d8e11f318e000a8cc434616d69e329edc374
+clone git github.com/coreos/go-etcd v2.0.0
+clone git github.com/hashicorp/consul v0.5.2
 
 # get distribution packages
 clone git github.com/docker/distribution b9eeb328080d367dbde850ec6e94f1e4ac2b5efe
