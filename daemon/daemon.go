@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -12,6 +13,9 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/docker/libnetwork"
+	nwapi "github.com/docker/libnetwork/api"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/docker/docker/api"
@@ -36,7 +40,6 @@ import (
 	"github.com/docker/docker/registry"
 	"github.com/docker/docker/runconfig"
 	"github.com/docker/docker/trust"
-	"github.com/docker/libnetwork"
 )
 
 var (
@@ -573,6 +576,9 @@ func (daemon *Daemon) RegisterLinks(container *Container, hostConfig *runconfig.
 			if child.hostConfig.NetworkMode.IsHost() {
 				return runconfig.ErrConflictHostNetworkAndLinks
 			}
+			if child.hostConfig.NetworkMode.IsUserDefined() {
+				return runconfig.ErrConflictUserNetworkAndLinks
+			}
 			if err := daemon.RegisterLink(container, child, alias); err != nil {
 				return err
 			}
@@ -766,6 +772,10 @@ func NewDaemon(config *Config, registryService *registry.Service) (daemon *Daemo
 	}
 
 	return d, nil
+}
+
+func (daemon *Daemon) NetworkApiRouter() func(w http.ResponseWriter, req *http.Request) {
+	return nwapi.NewHTTPHandler(daemon.netController)
 }
 
 func (daemon *Daemon) Shutdown() error {

@@ -60,7 +60,11 @@ command behaves.
 
 Currently, you can modify the `docker` command behavior using environment
 variables or command-line options. You can also use options within
+<<<<<<< HEAD
 `config.json` to modify some of the same behavior. When using these
+=======
+`config.json` to modify some of the same behavior.  When using these
+>>>>>>> f3005bae86c446fea404c5ecb8753f957c59a962
 mechanisms, you must keep in mind the order of precedence among them. Command
 line options override environment variables and environment variables override
 properties you specify in a `config.json` file.
@@ -891,11 +895,30 @@ production version.
     $ docker build -f /home/me/myapp/dockerfiles/debug /home/me/myapp
     $ docker build -f ../../../../dockerfiles/debug /home/me/myapp
 
+<<<<<<< HEAD
 These two `docker build` commands do the exact same thing. They both use the
 contents of the `debug` file instead of looking for a `Dockerfile` and will use
 `/home/me/myapp` as the root of the build context. Note that `debug` is in the
 directory structure of the build context, regardless of how you refer to it on
 the command line.
+=======
+These two `docker build` commands do the exact same thing. They both
+use the contents of the `debug` file instead of looking for a `Dockerfile`
+and will use `/home/me/myapp` as the root of the build context. Note that
+`debug` is in the directory structure of the build context, regardless of how
+you refer to it on the command line.
+
+> **Note:** `docker build` will return a `no such file or directory` error
+> if the file or directory does not exist in the uploaded context. This may
+> happen if there is no context, or if you specify a file that is elsewhere
+> on the Host system. The context is limited to the current directory (and its
+> children) for security reasons, and to ensure repeatable builds on remote
+> Docker hosts. This is also the reason why `ADD ../file` will not work.
+
+When `docker build` is run with the `--cgroup-parent` option the containers used
+in the build will be run with the [corresponding `docker run`
+flag](/reference/run/#specifying-custom-cgroups).
+>>>>>>> f3005bae86c446fea404c5ecb8753f957c59a962
 
 > **Note:**
 > `docker build` will return a `no such file or directory` error if the
@@ -1010,7 +1033,7 @@ Creates a new container.
       -m, --memory=""            Memory limit
       --mac-address=""           Container MAC address (e.g. 92:d0:c6:0a:29:33)
       --name=""                  Assign a name to the container
-      --net="bridge"             Set the Network mode for the container
+      --net="bridge"             Set the Network for the container
       --oom-kill-disable=false   Whether to disable OOM Killer for the container or not
       -P, --publish-all=false    Publish all exposed ports to random ports
       -p, --publish=[]           Publish a container's port(s) to the host
@@ -1698,6 +1721,38 @@ a given date. You can specify the date as an RFC 3339 date, a UNIX
 timestamp, or a Go duration string (e.g. `1m30s`, `3h`). Docker computes
 the date relative to the client machine’s time. You can combine
 the `--since` option with either or both of the `--follow` or `--tail` options.
+
+## network
+
+    Usage: docker network [OPTIONS] COMMAND [OPTIONS] [arg...]
+
+    Commands:
+        create    Create a network
+        rm        Remove a network
+        ls        List all networks
+        info      Display information of a network
+
+    Run 'docker network COMMAND --help' for more information on a command.
+
+        --help=false       Print usage
+
+The `docker network` command is used to manage Networks.
+
+To create a network, `docker network create foo`. You can also specify a driver
+if you have loaded a networking plugin e.g `docker network create -d bar foo`
+
+`docker network ls` is used to display the currently configured networks
+
+<INSERT OUTPUT HERE>
+
+To get detailed information on a network, you can use the `docker network info`
+command.
+
+<EXAMPLE HERE>
+
+If you no longer have need of a network, you can delete it with `docker network rm`
+
+<EXAMPLE HERE>
 
 ## pause
 
