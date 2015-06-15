@@ -26,6 +26,7 @@ import (
 	"github.com/docker/libnetwork"
 	"github.com/docker/libnetwork/netlabel"
 	"github.com/docker/libnetwork/options"
+	netconfig "github.com/docker/libnetwork/config"
 )
 
 const runDir = "/var/run/docker"
@@ -256,7 +257,10 @@ func isNetworkDisabled(config *Config) bool {
 }
 
 func initNetworkController(config *Config) (libnetwork.NetworkController, error) {
-	controller, err := libnetwork.New()
+
+	// SpikeCurtis HACK:  force use of etcd datastore.
+	controller, err := libnetwork.New(netconfig.OptionKVProvider("etcd"),
+		                              netconfig.OptionKVProviderURL("127.0.0.1:2379"))
 	if err != nil {
 		return nil, fmt.Errorf("error obtaining controller instance: %v", err)
 	}
